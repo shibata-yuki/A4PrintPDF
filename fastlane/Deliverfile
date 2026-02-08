@@ -1,0 +1,13 @@
+price_tier(0)
+automatic_release(true)
+submit_for_review(true)
+
+app_rating_config_path("./fastlane/rating_config.json")
+
+submission_information({
+  add_id_info_uses_idfa: true,
+  add_id_info_serves_ads: true,
+  add_id_info_tracks_action: false,
+  add_id_info_tracks_install: false,
+  add_id_info_limits_tracking: true
+})

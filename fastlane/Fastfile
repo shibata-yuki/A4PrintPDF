@@ -1,0 +1,55 @@
+default_platform(:ios)
+
+platform :ios do
+
+  desc "App Store Connect にアプリを新規作成"
+  lane :create_app do
+    create_app_online(
+      app_name: "A4 Print PDF",
+      language: "Japanese",
+      app_version: "1.0",
+      sku: "jp.unione.A4PrintPDF",
+      primary_category: "PRODUCTIVITY",
+      secondary_category: "UTILITIES"
+    )
+  end
+
+  desc "スクリーンショットを自動生成"
+  lane :screenshots do
+    snapshot
+  end
+
+  desc "TestFlight にアップロード"
+  lane :beta do
+    build_app(
+      scheme: "A4PrintPDF",
+      export_method: "app-store",
+      xcargs: "-allowProvisioningUpdates"
+    )
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true
+    )
+  end
+
+  desc "App Store に提出"
+  lane :release do
+    build_app(
+      scheme: "A4PrintPDF",
+      export_method: "app-store",
+      xcargs: "-allowProvisioningUpdates"
+    )
+    upload_to_app_store(
+      force: true,
+      submit_for_review: true,
+      automatic_release: true,
+      submission_information: {
+        add_id_info_uses_idfa: true,
+        add_id_info_serves_ads: true,
+        add_id_info_tracks_action: false,
+        add_id_info_tracks_install: false,
+        add_id_info_limits_tracking: true
+      }
+    )
+  end
+
+end
